@@ -1,4 +1,8 @@
 import { useState } from "react"
+import Checkbox from "./components/common/Checkbox"
+import Button from "./components/common/Button"
+import Slider from "./components/common/Slider"
+import InputNumber from "./components/common/InputNumber"
 
 function App() {
   const [length, setLength] = useState(12)
@@ -44,36 +48,20 @@ function App() {
   }
 
   return (
-    <>
-      <div className="card">
+    <div className="w-screen h-screen flex justify-center items-center bg-red-300">
+      <div className="h-1/2 w-1/2 bg-orange-400">
         <div onClick={() => navigator.clipboard.writeText(password)}>
           <p>Password: {password}</p>
         </div>
-        <div>
-          <input id="default-checkbox" type="checkbox" checked={includeLowercase} onChange={() => setIncludeLowercase(!includeLowercase)} className="w-4 h-4" />
-          <label htmlFor="default-checkbox">Lowercase</label>
-        </div>
-        <div>
-          <input id="default-checkbox" type="checkbox" checked={includeUppercase} onChange={() => setIncludeUppercase(!includeUppercase)} className="w-4 h-4" />
-          <label htmlFor="default-checkbox">Uppercase</label>
-        </div>
-        <div>
-          <input id="default-checkbox" type="checkbox" checked={includeNumbers} onChange={() => setIncludeNumbers(!includeNumbers)} className="w-4 h-4" />
-          <label htmlFor="default-checkbox">Numbers</label>
-        </div>
-        <div>
-          <input id="default-checkbox" type="checkbox" checked={includeSymbols} onChange={() => setIncludeSymbols(!includeSymbols)} className="w-4 h-4" />
-          <label htmlFor="default-checkbox">Symbols</label>
-        </div>
-        <div>
-          <label htmlFor="length">Length</label>
-          <input id="length" type="number" value={length} onChange={(e) => setLength(parseInt(e.target.value))} className="ml-2 w-12 h-8" />
-        </div>
-        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" onClick={() => handleGeneratePassword()}>
-          Generate Password
-        </button>
+        <Checkbox isChecked={includeLowercase} toggleIsChecked={setIncludeLowercase} label="Lowercase" />
+        <Checkbox isChecked={includeUppercase} toggleIsChecked={setIncludeUppercase} label="Uppercase" />
+        <Checkbox isChecked={includeNumbers} toggleIsChecked={setIncludeNumbers} label="Numbers" />
+        <Checkbox isChecked={includeSymbols} toggleIsChecked={setIncludeSymbols} label="Symbols" />
+        <Slider value={length} onChange={setLength} min={1} max={32} />
+        <InputNumber value={length} onInput={setLength} min={1} max={32} label="Length" />
+        <Button handleClick={() => handleGeneratePassword()} label="Generate Password" />
       </div>
-    </>
+    </div>
   )
 }
 
