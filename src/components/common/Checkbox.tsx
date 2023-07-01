@@ -6,15 +6,15 @@ interface Props {
 
 const Checkbox = ({ isChecked, toggleIsChecked, label }: Props) => {
   return (
-    <div>
+    <div className="flex items-center">
       <input
         id="default-checkbox"
         type="checkbox"
         checked={isChecked}
         onChange={() => toggleIsChecked(!isChecked)}
-        className="w-4 h-4"
+        className="w-4 h-4 ml-2"
       />
-      <label htmlFor="default-checkbox">{label}</label>
+      <label htmlFor="default-checkbox" className="pl-2">{label}</label>
     </div>
   )
 }

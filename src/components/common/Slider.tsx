@@ -8,7 +8,7 @@ interface Props {
 
 const Slider = ({ value, onChange, min, max, label }: Props) => {
   return (
-    <div>
+    <div className="pl-2 w-2/3 flex items-center">
       {label && <label htmlFor="slider">{label}</label>}
       <input
         id="slider"
@@ -17,7 +17,7 @@ const Slider = ({ value, onChange, min, max, label }: Props) => {
         max={max}
         value={value}
         onChange={(e) => onChange(parseInt(e.target.value))}
-        className="ml-2 w-12 h-8"
+        className="h-8 w-full"
       />
     </div>
   )

@@ -1,8 +1,13 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { BiCopy, BiRefresh } from "react-icons/bi"
+
 import Checkbox from "./components/common/Checkbox"
 import Button from "./components/common/Button"
 import Slider from "./components/common/Slider"
 import InputNumber from "./components/common/InputNumber"
+import InputText from "./components/common/InputText"
+
+import generatePassword from "./services/generatePassword"
 
 function App() {
   const [length, setLength] = useState(12)
@@ -11,55 +16,53 @@ function App() {
   const [includeNumbers, setIncludeNumbers] = useState(true)
   const [includeSymbols, setIncludeSymbols] = useState(true)
   const [password, setPassword] = useState('')
+  const [history, setHistory] = useState<string[]>([])
 
-  const handleGeneratePassword = () => {
-    const lowercaseCharacters = 'abcdefghijklmnopqrstuvwxyz'
-    const uppercaseCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    const numberCharacters = '0123456789'
-    const symbolCharacters = '!@#$%^&*()_+'
+  const refreshPassword = () => {
+    const password = generatePassword({ length, includeLowercase, includeUppercase, includeNumbers, includeSymbols })
+    setPassword(password)
 
-    let characterList = ''
-    if (includeLowercase) {
-      characterList += lowercaseCharacters
+    if (history.length >= 5) {
+      setHistory(history.slice(1))
     }
-    if (includeUppercase) {
-      characterList += uppercaseCharacters
-    }
-    if (includeNumbers) {
-      characterList += numberCharacters
-    }
-    if (includeSymbols) {
-      characterList += symbolCharacters
-    }
-
-    setPassword(createPassword(characterList))
+    setHistory([...history, password])
   }
 
-  // TODO - This implementation does not guarantee that
-  // all character types will be included in the password
-  const createPassword = (characterList: string) => {
-    let password = ''
-    const characterListLength = characterList.length
-    for (let i = 0; i < length; i++) {
-      const characterIndex = Math.round(Math.random() * characterListLength)
-      password += characterList.charAt(characterIndex)
-    }
-    return password
-  }
+  useEffect(() => {
+    refreshPassword()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [length, includeLowercase, includeUppercase, includeNumbers, includeSymbols])
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center bg-red-300">
-      <div className="h-1/2 w-1/2 bg-orange-400">
-        <div onClick={() => navigator.clipboard.writeText(password)}>
-          <p>Password: {password}</p>
+    <div className="w-screen h-screen flex flex-col justify-center lg:justify-center items-center bg-slate-300 align-middle">
+      <div>
+        <div className="pt-4 flex">
+          <InputText value={password} onInput={setPassword} />
+          <div onClick={() => navigator.clipboard.writeText(password)} className="flex items-center pl-2">
+            <BiCopy size={28} className="text-gray-500 hover:text-gray-700 cursor-pointer" />
+            <BiRefresh onClick={() => refreshPassword()} size={32} className="text-gray-500 hover:text-gray-700 cursor-pointer ml-2" />
+          </div>
         </div>
-        <Checkbox isChecked={includeLowercase} toggleIsChecked={setIncludeLowercase} label="Lowercase" />
-        <Checkbox isChecked={includeUppercase} toggleIsChecked={setIncludeUppercase} label="Uppercase" />
-        <Checkbox isChecked={includeNumbers} toggleIsChecked={setIncludeNumbers} label="Numbers" />
-        <Checkbox isChecked={includeSymbols} toggleIsChecked={setIncludeSymbols} label="Symbols" />
-        <Slider value={length} onChange={setLength} min={1} max={32} />
-        <InputNumber value={length} onInput={setLength} min={1} max={32} label="Length" />
-        <Button handleClick={() => handleGeneratePassword()} label="Generate Password" />
+        <div className="w-full flex justify-between pt-4">
+          <div>
+            <Checkbox isChecked={includeLowercase} toggleIsChecked={setIncludeLowercase} label="Lowercase" />
+            <Checkbox isChecked={includeUppercase} toggleIsChecked={setIncludeUppercase} label="Uppercase" />
+          </div>
+          <div>
+            <Checkbox isChecked={includeNumbers} toggleIsChecked={setIncludeNumbers} label="Numbers" />
+            <Checkbox isChecked={includeSymbols} toggleIsChecked={setIncludeSymbols} label="Symbols" />
+          </div>
+        </div>
+        <div className="flex flex-col pt-2 w-full">
+          <p>Password Length:</p>
+          <div className="flex items-center pt-2">
+            <InputNumber value={length} onInput={setLength} min={1} max={32} />
+            <Slider value={length} onChange={setLength} min={1} max={32} />
+          </div>
+        </div>
+        <div className="flex justify-center pt-5">
+          <Button handleClick={() => refreshPassword()} label="Generate Password" />
+        </div>
       </div>
     </div>
   )

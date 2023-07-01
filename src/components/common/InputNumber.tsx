@@ -3,7 +3,7 @@ interface Props {
   onInput: (value: number) => void
   min: number
   max: number
-  label: string
+  label?: string
 }
 
 const InputNumber = ({ value, onInput, min, max, label }: Props) => {
@@ -17,7 +17,7 @@ const InputNumber = ({ value, onInput, min, max, label }: Props) => {
         max={max}
         value={value}
         onChange={(e) => onInput(parseInt(e.target.value))}
-        className="ml-2 w-12 h-8"
+        className="ml-2 w-12 h-8 rounded"
       />
     </div>
   )
