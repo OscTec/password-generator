@@ -36,7 +36,7 @@ function App() {
   return (
     <div className="w-screen h-screen flex flex-col justify-center lg:justify-center items-center bg-slate-300 align-middle">
       <div>
-        <div className="pt-4 flex">
+        <div className="pt-4 flex flex-col sm:flex-row">
           <InputText value={password} onInput={setPassword} />
           <div onClick={() => navigator.clipboard.writeText(password)} className="flex items-center pl-2">
             <BiCopy size={28} className="text-gray-500 hover:text-gray-700 cursor-pointer" />
