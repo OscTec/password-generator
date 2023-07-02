@@ -6,6 +6,7 @@ import Button from "./components/common/Button"
 import Slider from "./components/common/Slider"
 import InputNumber from "./components/common/InputNumber"
 import InputText from "./components/common/InputText"
+import Alert from "./components/common/Alert"
 
 import generatePassword from "./services/generatePassword"
 
@@ -17,6 +18,7 @@ function App() {
   const [includeSymbols, setIncludeSymbols] = useState(true)
   const [password, setPassword] = useState('')
   const [history, setHistory] = useState<string[]>([])
+  const [showAlert, setShowAlert] = useState(false)
 
   const refreshPassword = () => {
     const password = generatePassword({ length, includeLowercase, includeUppercase, includeNumbers, includeSymbols })
@@ -28,6 +30,12 @@ function App() {
     setHistory([...history, password])
   }
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(password)
+    setShowAlert(true)
+    setTimeout(() => setShowAlert(false), 1000)
+  }
+
   useEffect(() => {
     refreshPassword()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -35,10 +43,11 @@ function App() {
 
   return (
     <div className="w-screen h-screen flex flex-col justify-center lg:justify-center items-center bg-slate-300 align-middle">
+      {showAlert && <Alert label={'Copied'} />}
       <div>
         <div className="pt-4 flex flex-col sm:flex-row">
           <InputText value={password} onInput={setPassword} />
-          <div onClick={() => navigator.clipboard.writeText(password)} className="flex items-center pl-2">
+          <div onClick={() => copyToClipboard()} className="flex items-center pl-2">
             <BiCopy size={28} className="text-gray-500 hover:text-gray-700 cursor-pointer" />
             <BiRefresh onClick={() => refreshPassword()} size={32} className="text-gray-500 hover:text-gray-700 cursor-pointer ml-2" />
           </div>
