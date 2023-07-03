@@ -47,8 +47,8 @@ function App() {
       <div>
         <div className="pt-4 flex flex-col sm:flex-row">
           <InputText value={password} onInput={setPassword} />
-          <div onClick={() => copyToClipboard()} className="flex items-center pl-2">
-            <BiCopy size={28} className="text-gray-500 hover:text-gray-700 cursor-pointer" />
+          <div className="flex items-center pl-2">
+            <BiCopy onClick={() => copyToClipboard()} size={28} className="text-gray-500 hover:text-gray-700 cursor-pointer" />
             <BiRefresh onClick={() => refreshPassword()} size={32} className="text-gray-500 hover:text-gray-700 cursor-pointer ml-2" />
           </div>
         </div>
