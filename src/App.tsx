@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { BiCopy, BiRefresh } from "react-icons/bi"
 
-import Checkbox from "./components/common/Checkbox"
+import Alert from "./components/common/Alert"
 import Button from "./components/common/Button"
-import Slider from "./components/common/Slider"
+import Checkbox from "./components/common/Checkbox"
 import InputNumber from "./components/common/InputNumber"
 import InputText from "./components/common/InputText"
-import Alert from "./components/common/Alert"
+import Slider from "./components/common/Slider"
 
 import generatePassword from "./services/generatePassword"
 
@@ -46,7 +46,7 @@ function App() {
       {showAlert && <Alert label={'Copied'} />}
       <div>
         <div className="pt-4 flex flex-col sm:flex-row">
-          <InputText value={password} onInput={setPassword} />
+          <InputText id="password" value={password} onInput={setPassword} />
           <div className="flex items-center pl-2">
             <BiCopy onClick={() => copyToClipboard()} size={28} className="text-gray-500 hover:text-gray-700 cursor-pointer" />
             <BiRefresh onClick={() => refreshPassword()} size={32} className="text-gray-500 hover:text-gray-700 cursor-pointer ml-2" />
@@ -54,18 +54,18 @@ function App() {
         </div>
         <div className="w-full flex justify-between pt-4">
           <div>
-            <Checkbox isChecked={includeLowercase} toggleIsChecked={setIncludeLowercase} label="Lowercase" />
-            <Checkbox isChecked={includeUppercase} toggleIsChecked={setIncludeUppercase} label="Uppercase" />
+            <Checkbox id="lowercase" isChecked={includeLowercase} toggleIsChecked={setIncludeLowercase} label="Lowercase" />
+            <Checkbox id="uppercase" isChecked={includeUppercase} toggleIsChecked={setIncludeUppercase} label="Uppercase" />
           </div>
           <div>
-            <Checkbox isChecked={includeNumbers} toggleIsChecked={setIncludeNumbers} label="Numbers" />
-            <Checkbox isChecked={includeSymbols} toggleIsChecked={setIncludeSymbols} label="Symbols" />
+            <Checkbox id="numbers" isChecked={includeNumbers} toggleIsChecked={setIncludeNumbers} label="Numbers" />
+            <Checkbox id="symbols" isChecked={includeSymbols} toggleIsChecked={setIncludeSymbols} label="Symbols" />
           </div>
         </div>
         <div className="flex flex-col pt-2 w-full">
           <p>Password Length:</p>
           <div className="flex items-center pt-2">
-            <InputNumber value={length} onInput={setLength} min={1} max={32} />
+            <InputNumber id="password-length" value={length} onInput={setLength} min={1} max={32} />
             <Slider value={length} onChange={setLength} min={1} max={32} />
           </div>
         </div>
